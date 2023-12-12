@@ -6,7 +6,7 @@ use IEEE.numeric_std.all;
 
 
 
-entity FORCA2 is
+entity Forca is
 Port (
 		tentativa: in std_logic_vector (2 downto 0); -- VETOR QUE SIMBOLIZA O CHUTE, CADA SWITCH, PODENDO SER 0 OU 1, REPRESENTA 1 BIT DO CHUTE
 		reset : in std_logic := '0';
@@ -20,9 +20,9 @@ Port (
 -- SENHA = 71650
 		
 		
-end FORCA2;
+end Forca;
 
-architecture Behavioral of FORCA2 is
+architecture Behavioral of Forca is
 
 signal estado_s : std_logic_vector (4 downto 0) := "00000"; -- COMEÇA SEM NENHUM ACERTO
 signal vida_s : std_logic_vector (2 downto 0) := "111"; -- COMEÇA COM TODAS AS VIDAS
