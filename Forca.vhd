@@ -14,8 +14,8 @@ Port (
 		estado_out: out std_logic_vector (4 downto 0); -- VETOR QUE SIMBOLIZA CASO O PRIMEIRO(7), SEGUNDO(6), ATE O QUINTO DIGITOS JA FORAM ACERTADOS, DA ESQUERDA PARA A DIREITA
 		botao: in std_logic := '0';   -- FUNCIONA COMO CLOCK, O CÓDIGO SÓ "FUNCIONA" COM O APERTAR DO BOTAO
 		vida: out std_logic_vector (2 downto 0) := "111";
-		vitoria: out std_logic; -- VITORIA
-		derrota: out std_logic);  -- DERROTA
+		ganha: out std_logic; -- VITORIA
+		perde: out std_logic);  -- DERROTA
 		
 -- SENHA = 71650
 		
@@ -28,8 +28,8 @@ signal estado_s : std_logic_vector (4 downto 0) := "00000"; -- COMEÇA SEM NENHU
 signal vida_s : std_logic_vector (2 downto 0) := "111"; -- COMEÇA COM TODAS AS VIDAS
 signal botao_s : std_logic;
 signal chute_s : std_logic_vector (2 downto 0);
-signal vitoria_s : std_logic := '0';
-signal derrota_s : std_logic:= '0';
+signal ganha_s : std_logic := '0';
+signal perde_s : std_logic:= '0';
 signal erros : std_logic_vector(2 downto 0) := "000"; -- O VETOR ERROS SURGIU PARA SOLUCIONAR UM ERRO ASSOCIADO AO BOTÃO, EM QUE A RESPOSTA ERA CONTABILIZADA
 -- DIVERSAS VEZES, RESULTANDO EM UMA DERROTA INSTANTÂNEA, DEVIDO À VELOCIDADE DO CLOCK (DIVERSAS SUBIDAS DE CLOCK ACONTECIAM NO APERTAR DO BOTÃO)
 -- OBJETIVAMENTE COM O O VETOR ERROS, PORTANTO, ESSE ERRO FOI SOLUCIONADO, ALÉM DE CHUTES REPETIDOS SEREM DESCONSIDERADOS, POIS ELE IMPEDE QUE CHUTES
@@ -49,22 +49,22 @@ if(clk' event and clk = '1') then
 	when "111" => -- 7, dígito 1 da esquerda pra direita
 		if (reset = '1') then
 			estado_s <= "00000"; 
-			vitoria_s <= '0';
-			derrota_s <= '0';
+			ganha_s <= '0';
+			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
 		end if;
 		if (botao = '1') then
 			estado_s(4) <= '1';
-			vitoria_s <= '0';
-			derrota_s <= '0';
+			ganha_s <= '0';
+			perde_s <= '0';
 		end if; 
 		
 	when "001" => -- 1, dígito 2 da esquerda pra direita
 		if (reset = '1') then
 			estado_s <= "00000";
-			vitoria_s <= '0';
-			derrota_s <= '0';
+			ganha_s <= '0';
+			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
 		end if;
@@ -76,8 +76,8 @@ if(clk' event and clk = '1') then
 	when "110" => -- 6, dígito 3 da esquerda pra direita
 		if (reset = '1') then
 			estado_s <= "00000";
-			vitoria_s <= '0';
-			derrota_s <= '0';
+			ganha_s <= '0';
+			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
 		end if;
@@ -89,8 +89,8 @@ if(clk' event and clk = '1') then
 	when "101" => --5, dígito 4 da esquerda pra direita
 		if (reset = '1') then
 			estado_s <= "00000"; 
-			vitoria_s <= '0';
-			derrota_s <= '0';
+			ganha_s <= '0';
+			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
 		end if;
@@ -102,8 +102,8 @@ if(clk' event and clk = '1') then
 	when "000" => -- 0, dígito 5 da esquerda pra direita
 		if (reset = '1') then
 			estado_s <= "00000"; 
-			vitoria_s <= '0';
-			derrota_s <= '0';
+			ganha_s <= '0';
+			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
 		end if;
@@ -114,8 +114,8 @@ if(clk' event and clk = '1') then
 	when "010" =>
 	if (reset = '1') then
 			estado_s <= "00000";
-			vitoria_s <= '0';
-			derrota_s <= '0';
+			ganha_s <= '0';
+			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
 		end if;
@@ -126,7 +126,7 @@ if(clk' event and clk = '1') then
 			erros(2) <= '1';
 		
 		elsif (vida_s(1) = '1' AND erros(2) = '0') then
-			vidas_s(1) <= '0';
+			vida_s(1) <= '0';
 			erros(2) <= '1';
 			
 		elsif (vida_s(0) = '1' AND erros(2) = '0') then
@@ -138,8 +138,8 @@ if(clk' event and clk = '1') then
 	when "011" =>
 	if (reset = '1') then
 			estado_s <= "00000";
-			vitoria_s <= '0';
-			derrota_s <= '0';
+			ganha_s <= '0';
+			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
 		end if;
@@ -161,8 +161,8 @@ if(clk' event and clk = '1') then
 	when "100" =>
 	if (reset = '1') then
 			estado_s <= "00000";
-			vitoria_s <= '0';
-			derrota_s <= '0';
+			ganha_s <= '0';
+			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
 		end if;
@@ -184,8 +184,8 @@ if(clk' event and clk = '1') then
 	when others =>
 	if (reset = '1') then
 			estado_s <= "00000";
-			vitoria_s <= '0';
-			derrota_s <= '0';
+			ganha_s <= '0';
+			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
 		end if;
@@ -204,16 +204,16 @@ if(clk' event and clk = '1') then
 
 end if;
 
-vitoria_s <= estado_s(4) and estado_s(3) and estado_s(2) and estado_s(1) and estado_s(0);
+ganha_s <= estado_s(4) and estado_s(3) and estado_s(2) and estado_s(1) and estado_s(0);
 
 if (vida_s = "000") then
-vitoria_s <= '0';
-derrota_s <= '1';
+ganha_s <= '0';
+perde_s <= '1';
 end if;
 end process;
 
 estado_out <= estado_s;
 vida <= vida_s;
-derrota <= derrota_s;
-vitoria <= vitoria_s;
+perde <= perde_s;
+ganha <= ganha_s;
 end Behavioral;
