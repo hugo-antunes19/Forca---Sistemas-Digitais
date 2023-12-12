@@ -2,22 +2,22 @@
 Library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;		
 		
-		entity FAZENDOTESTES is
+		entity LCD is
 		generic (fclk: natural := 110_000_000); -- 110MHz , cristal do kit EE03
 		port (
 				 botao       : in std_logic := '0';
 				 reset       : in std_logic := '0';
 				 chute       : in std_logic_vector (2 downto 0);
 		       clk         : in std_logic; 
-				 RS, RW      : out bit;
-				 vidas 		 : out std_logic_vector (2 downto 0);
+			RS, RW      : out bit;
+			vidas 		 : out std_logic_vector (2 downto 0);
 		       E           : buffer bit;  
 		       DB          : out bit_vector(7 downto 0)); 
-		end FAZENDOTESTES;
+		end LCD;
 
 
 
-		architecture hardware of FAZENDOTESTES is
+		architecture hardware of LCD is
 		
 		type state is (FunctionSetl, FunctionSet2, FunctionSet3,
 		 FunctionSet4,FunctionSet5,FunctionSet6,FunctionSet7,FunctionSet8,FunctionSet9,FunctionSet10,FunctionSet11,FunctionSet12,
@@ -33,22 +33,22 @@ use IEEE.STD_LOGIC_1164.ALL;
 		signal vidas_f : std_logic_vector (2 downto 0);
 		
 ----Componentes :---------
-	component FORCA2 is
-						Port (
-								chute: in std_logic_vector (2 downto 0);
-								reset : in std_logic := '0';
-								clk: in std_logic;
-								estado_out: out std_logic_vector (4 downto 0);
-								botao: in std_logic := '0';
-								vidas: out std_logic_vector (2 downto 0);
-								vitoria: out std_logic;
-								derrota: out std_logic);   
+	component Forca is
+		Port (
+			tentativa: in std_logic_vector (2 downto 0); -- VETOR QUE SIMBOLIZA O CHUTE, CADA SWITCH, PODENDO SER 0 OU 1, REPRESENTA 1 BIT DO CHUTE
+			reset : in std_logic := '0';
+			clk: in std_logic;
+			estado_out: out std_logic_vector (4 downto 0); -- VETOR QUE SIMBOLIZA CASO O PRIMEIRO(7), SEGUNDO(6), ATE O QUINTO DIGITOS JA FORAM ACERTADOS, DA ESQUERDA PARA A DIREITA
+			botao: in std_logic := '0';   -- FUNCIONA COMO CLOCK, O CÓDIGO SÓ "FUNCIONA" COM O APERTAR DO BOTAO
+			vida: out std_logic_vector (2 downto 0) := "111";
+			ganha: out std_logic; -- VITORIA
+			perde: out std_logic);  -- DERROTA
 	end component;
 	
 begin 	
 							
 ----Modulo da Forca :---------
-forca_f: FORCA2 port map (chute, reset, ee, estado_out, botao, vidas_f, vitoria, derrota);	
+forca_f: Forca port map (chute, reset, ee, estado_out, botao, vidas_f, vitoria, derrota);	
 vidas <= vidas_f;
 ----Clock generator (E->500Hz) :---------
 		process (clk)
