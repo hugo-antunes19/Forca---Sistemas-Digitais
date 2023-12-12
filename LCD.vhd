@@ -50,6 +50,8 @@ BEGIN
 ----Modulo da Forca :---------
 forca_f: Forca PORT MAP (chute, reset, ee, estado_out, botao, vidas_f, vitoria, derrota);	
 vidas <= vidas_f;
+
+
 ----Clock generator (E->500Hz) :---------
 		PROCESS (clk)
 		VARIABLE count: natural range 0 to fclk/100; 
@@ -63,7 +65,8 @@ vidas <= vidas_f;
 				END IF; 
 			END IF; 
 	END PROCESS;
-		
+
+				
 -----Lower section of FSM:---------------
 		PROCESS (E) 
 		BEGIN
