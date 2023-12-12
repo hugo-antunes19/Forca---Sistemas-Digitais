@@ -8,12 +8,12 @@ use IEEE.numeric_std.all;
 
 entity FORCA2 is
 Port (
-		chute: in std_logic_vector (2 downto 0); -- VETOR QUE SIMBOLIZA O CHUTE, CADA SWITCH, PODENDO SER 0 OU 1, REPRESENTA 1 BIT DO CHUTE
+		tentativa: in std_logic_vector (2 downto 0); -- VETOR QUE SIMBOLIZA O CHUTE, CADA SWITCH, PODENDO SER 0 OU 1, REPRESENTA 1 BIT DO CHUTE
 		reset : in std_logic := '0';
 		clk: in std_logic;
 		estado_out: out std_logic_vector (4 downto 0); -- VETOR QUE SIMBOLIZA CASO O PRIMEIRO(7), SEGUNDO(6), ATE O QUINTO DIGITOS JA FORAM ACERTADOS, DA ESQUERDA PARA A DIREITA
 		botao: in std_logic := '0';   -- FUNCIONA COMO CLOCK, O CÓDIGO SÓ "FUNCIONA" COM O APERTAR DO BOTAO
-		vidas: out std_logic_vector (2 downto 0) := "111";
+		vida: out std_logic_vector (2 downto 0) := "111";
 		vitoria: out std_logic; -- VITORIA
 		derrota: out std_logic);  -- DERROTA
 		
@@ -25,7 +25,7 @@ end FORCA2;
 architecture Behavioral of FORCA2 is
 
 signal estado_s : std_logic_vector (4 downto 0) := "00000"; -- COMEÇA SEM NENHUM ACERTO
-signal vidas_s : std_logic_vector (2 downto 0) := "111"; -- COMEÇA COM TODAS AS VIDAS
+signal vida_s : std_logic_vector (2 downto 0) := "111"; -- COMEÇA COM TODAS AS VIDAS
 signal botao_s : std_logic;
 signal chute_s : std_logic_vector (2 downto 0);
 signal vitoria_s : std_logic := '0';
@@ -51,7 +51,7 @@ if(clk' event and clk = '1') then
 			estado_s <= "00000"; 
 			vitoria_s <= '0';
 			derrota_s <= '0';
-			vidas_s <= "111";
+			vida_s <= "111";
 			erros <= "000";
 		end if;
 		if (botao = '1') then
@@ -65,7 +65,7 @@ if(clk' event and clk = '1') then
 			estado_s <= "00000";
 			vitoria_s <= '0';
 			derrota_s <= '0';
-			vidas_s <= "111";
+			vida_s <= "111";
 			erros <= "000";
 		end if;
 		if (botao = '1') then
@@ -78,7 +78,7 @@ if(clk' event and clk = '1') then
 			estado_s <= "00000";
 			vitoria_s <= '0';
 			derrota_s <= '0';
-			vidas_s <= "111";
+			vida_s <= "111";
 			erros <= "000";
 		end if;
 		if (botao = '1') then
@@ -91,7 +91,7 @@ if(clk' event and clk = '1') then
 			estado_s <= "00000"; 
 			vitoria_s <= '0';
 			derrota_s <= '0';
-			vidas_s <= "111";
+			vida_s <= "111";
 			erros <= "000";
 		end if;
 		if (botao = '1') then
@@ -104,7 +104,7 @@ if(clk' event and clk = '1') then
 			estado_s <= "00000"; 
 			vitoria_s <= '0';
 			derrota_s <= '0';
-			vidas_s <= "111";
+			vida_s <= "111";
 			erros <= "000";
 		end if;
 		if (botao = '1') then
@@ -116,21 +116,21 @@ if(clk' event and clk = '1') then
 			estado_s <= "00000";
 			vitoria_s <= '0';
 			derrota_s <= '0';
-			vidas_s <= "111";
+			vida_s <= "111";
 			erros <= "000";
 		end if;
 	if (botao = '1' AND erros(2) = '0') then
 		-- A LÓGICA DE TIRAR VIDAS FOI FEITA DESSA FORMA PARA QUE SE TIRE AS VIDAS NA ORDEM, DA ESQUERDA PARA A DIREITA
-		if vidas_s(2) = '1' then
-			vidas_s(2) <= '0';
+		if vida_s(2) = '1' then
+			vida_s(2) <= '0';
 			erros(2) <= '1';
 		
-		elsif (vidas_s(1) = '1' AND erros(2) = '0') then
+		elsif (vida_s(1) = '1' AND erros(2) = '0') then
 			vidas_s(1) <= '0';
 			erros(2) <= '1';
 			
-		elsif (vidas_s(0) = '1' AND erros(2) = '0') then
-			vidas_s(0) <= '0';
+		elsif (vida_s(0) = '1' AND erros(2) = '0') then
+			vida_s(0) <= '0';
 			erros(2) <= '1';
 		end if;
 		end if;
@@ -140,20 +140,20 @@ if(clk' event and clk = '1') then
 			estado_s <= "00000";
 			vitoria_s <= '0';
 			derrota_s <= '0';
-			vidas_s <= "111";
+			vida_s <= "111";
 			erros <= "000";
 		end if;
 	if (botao = '1' AND erros(1) = '0') then
 		if vidas_s(2) = '1' then
-			vidas_s(2) <= '0';
+			vida_s(2) <= '0';
 			erros(1) <= '1';
 		
-		elsif (vidas_s(1) = '1' AND erros(1) = '0') then
-			vidas_s(1) <= '0';
+		elsif (vida_s(1) = '1' AND erros(1) = '0') then
+			vida_s(1) <= '0';
 			erros(1) <= '1';
 			
-		elsif (vidas_s(0) = '1' AND erros(1) = '0') then
-			vidas_s(0) <= '0';
+		elsif (vida_s(0) = '1' AND erros(1) = '0') then
+			vida_s(0) <= '0';
 			erros(1) <= '1';
 		end if;
 		end if;
@@ -163,20 +163,20 @@ if(clk' event and clk = '1') then
 			estado_s <= "00000";
 			vitoria_s <= '0';
 			derrota_s <= '0';
-			vidas_s <= "111";
+			vida_s <= "111";
 			erros <= "000";
 		end if;
 	if (botao = '1' AND erros(0) = '0') then
-		if vidas_s(2) = '1' then
-			vidas_s(2) <= '0';
+		if vida_s(2) = '1' then
+			vida_s(2) <= '0';
 			erros(0) <= '1';
 		
-		elsif (vidas_s(1) = '1' AND erros(0) = '0') then
-			vidas_s(1) <= '0';
+		elsif (vida_s(1) = '1' AND erros(0) = '0') then
+			vida_s(1) <= '0';
 			erros(0) <= '1';
 			
-		elsif (vidas_s(0) = '1' AND erros(0) = '0') then
-			vidas_s(0) <= '0';
+		elsif (vida_s(0) = '1' AND erros(0) = '0') then
+			vida_s(0) <= '0';
 			erros(0) <= '1';
 		end if;		
 		end if;
@@ -186,18 +186,18 @@ if(clk' event and clk = '1') then
 			estado_s <= "00000";
 			vitoria_s <= '0';
 			derrota_s <= '0';
-			vidas_s <= "111";
+			vida_s <= "111";
 			erros <= "000";
 		end if;
 	if (botao = '1') then
-		if vidas_s(2) = '1' then
-			vidas_s(2) <= '0';
+		if vidas_(2) = '1' then
+			vida_s(2) <= '0';
 		
-		elsif vidas_s(1) = '1' then
-			vidas_s(1) <= '0';
+		elsif vida_s(1) = '1' then
+			vida_s(1) <= '0';
 		
-		elsif vidas_s(0) = '1' then
-			vidas_s(0) <= '0';
+		elsif vida_s(0) = '1' then
+			vida_s(0) <= '0';
 		end if;
 	end if; 
 	end case;
@@ -206,14 +206,14 @@ end if;
 
 vitoria_s <= estado_s(4) and estado_s(3) and estado_s(2) and estado_s(1) and estado_s(0);
 
-if (vidas_s = "000") then
+if (vida_s = "000") then
 vitoria_s <= '0';
 derrota_s <= '1';
 end if;
 end process;
 
 estado_out <= estado_s;
-vidas <= vidas_s;
+vida <= vida_s;
 derrota <= derrota_s;
 vitoria <= vitoria_s;
 end Behavioral;
