@@ -6,7 +6,7 @@ use IEEE.numeric_std.all;
 
 
 
-entity Forca is
+entity Forca IS
 Port (
 		tentativa: in std_logic_vector (2 downto 0); -- VETOR QUE SIMBOLIZA O CHUTE, CADA SWITCH, PODENDO SER 0 OU 1, REPRESENTA 1 BIT DO CHUTE
 		reset : in std_logic := '0';
@@ -22,22 +22,22 @@ Port (
 		
 END Forca;
 
-architecture Behavioral of Forca is
+architecture Behavioral of Forca IS
 
-SIGNAL estado_s : std_logic_vector (4 downto 0) := "00000"; -- COMEÇA SEM NENHUM ACERTO
-SIGNAL vida_s : std_logic_vector (2 downto 0) := "111"; -- COMEÇA COM TODAS AS VIDAS
+SIGNAL estado_s : std_logic_vector (4 DOWNTO 0) := "00000"; -- COMEÇA SEM NENHUM ACERTO
+SIGNAL vida_s : std_logic_vector (2 DOWNTO 0) := "111"; -- COMEÇA COM TODAS AS VIDAS
 SIGNAL botao_s : std_logic;
-SIGNAL tentativa_s : std_logic_vector (2 downto 0);
+SIGNAL tentativa_s : std_logic_vector (2 DOWNTO 0);
 SIGNAL ganha_s : std_logic := '0';
 SIGNAL perde_s : std_logic:= '0';
-SIGNAL erros : std_logic_vector(2 downto 0) := "000"; -- O VETOR ERROS SURGIU PARA SOLUCIONAR UM ERRO ASSOCIADO AO BOTÃO, EM QUE A RESPOSTA ERA CONTABILIZADA
+SIGNAL erros : std_logic_vector(2 DOWNTO 0) := "000"; -- O VETOR ERROS SURGIU PARA SOLUCIONAR UM ERRO ASSOCIADO AO BOTÃO, EM QUE A RESPOSTA ERA CONTABILIZADA
 -- DIVERSAS VEZES, RESULTANDO EM UMA DERROTA INSTANTÂNEA, DEVIDO À VELOCIDADE DO CLOCK (DIVERSAS SUBIDAS DE CLOCK ACONTECIAM NO APERTAR DO BOTÃO)
 -- OBJETIVAMENTE COM O O VETOR ERROS, PORTANTO, ESSE ERRO FOI SOLUCIONADO, ALÉM DE CHUTES REPETIDOS SEREM DESCONSIDERADOS, POIS ELE IMPEDE QUE CHUTES
 -- ERRADOS SEJAM FEITOS MAIS DE UMA VEZ.
 
-begin
+BEGIN
 
-PROCESS (clk,reset) begin
+PROCESS (clk,reset) BEGIN
 
 IF(clk' event and clk = '1') THEN
 -- NESSE TRECHO, SERÃO COMPARADOS OS CHUTES E OS DÍGITOS DA SENHA, RESULTANDO EM UM ACERTO, COM O BIT CORRESPONDENTE AO DÍGITO NO VETOR ESTADO-S INDO DE O PARA 1,
@@ -47,171 +47,171 @@ IF(clk' event and clk = '1') THEN
 	CASE tentativa IS
 
 	WHEN "111" => -- 7, dígito 1 da esquerda pra direita
-		if (reset = '1') then
+		IF (reset = '1') THEN
 			estado_s <= "00000"; 
 			ganha_s <= '0';
 			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
-		end if;
-		if (botao = '1') then
+		END IF;
+		IF (botao = '1') THEN
 			estado_s(4) <= '1';
 			ganha_s <= '0';
 			perde_s <= '0';
-		end if; 
+		END IF; 
 		
-	when "001" => -- 1, dígito 2 da esquerda pra direita
-		if (reset = '1') then
+	WHEN "001" => -- 1, dígito 2 da esquerda pra direita
+		IF (reset = '1') THEN
 			estado_s <= "00000";
 			ganha_s <= '0';
 			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
-		end if;
-		if (botao = '1') then
+		END IF;
+		IF (botao = '1') THEN
 			estado_s(3) <= '1';
-		end if; 
+		END IF; 
 		
 		
-	when "110" => -- 6, dígito 3 da esquerda pra direita
-		if (reset = '1') then
+	WHEN "110" => -- 6, dígito 3 da esquerda pra direita
+		IF (reset = '1') then
 			estado_s <= "00000";
 			ganha_s <= '0';
 			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
-		end if;
-		if (botao = '1') then
+		END IF;
+		IF (botao = '1') THEN
 			estado_s(2) <= '1';
-		end if; 
+		END IF; 
 	
 		
-	when "101" => --5, dígito 4 da esquerda pra direita
-		if (reset = '1') then
+	WHEN "101" => --5, dígito 4 da esquerda pra direita
+		IF (reset = '1') THEN
 			estado_s <= "00000"; 
 			ganha_s <= '0';
 			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
-		end if;
-		if (botao = '1') then
+		END IF;
+		IF (botao = '1') THEN
 			estado_s(1) <= '1';
-		end if; 
+		END IF; 
 		
 		
-	when "000" => -- 0, dígito 5 da esquerda pra direita
-		if (reset = '1') then
+	WHEN "000" => -- 0, dígito 5 da esquerda pra direita
+		IF (reset = '1') THEN
 			estado_s <= "00000"; 
 			ganha_s <= '0';
 			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
-		end if;
-		if (botao = '1') then
+		END IF;
+		IF (botao = '1') THEN
 			estado_s(0) <= '1';
-		end if; 
+		END IF; 
 	-- DAQUI EM DIANTE, TODOS OS CHUTES ERRADOS SÃO VERIFICADOS
-	when "010" =>
-	if (reset = '1') then
+	WHEN "010" =>
+	IF (reset = '1') THEN
 			estado_s <= "00000";
 			ganha_s <= '0';
 			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
-		end if;
-	if (botao = '1' AND erros(2) = '0') then
+		END IF;
+	IF (botao = '1' AND erros(2) = '0') THEN
 		-- A LÓGICA DE TIRAR VIDAS FOI FEITA DESSA FORMA PARA QUE SE TIRE AS VIDAS NA ORDEM, DA ESQUERDA PARA A DIREITA
-		if vida_s(2) = '1' then
+		IF vida_s(2) = '1' THEN
 			vida_s(2) <= '0';
 			erros(2) <= '1';
 		
-		elsif (vida_s(1) = '1' AND erros(2) = '0') then
+		ELSIF (vida_s(1) = '1' AND erros(2) = '0') THEN
 			vida_s(1) <= '0';
 			erros(2) <= '1';
 			
-		elsif (vida_s(0) = '1' AND erros(2) = '0') then
+		ELSIF (vida_s(0) = '1' AND erros(2) = '0') THEN
 			vida_s(0) <= '0';
 			erros(2) <= '1';
-		end if;
-		end if;
+		END IF;
+		END IF;
 		
-	when "011" =>
-	if (reset = '1') then
+	WHEN "011" =>
+	IF (reset = '1') THEN
 			estado_s <= "00000";
 			ganha_s <= '0';
 			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
-		end if;
-	if (botao = '1' AND erros(1) = '0') then
-		if vida_s(2) = '1' then
+		END IF;
+	IF (botao = '1' AND erros(1) = '0') THEN
+		IF vida_s(2) = '1' THEN
 			vida_s(2) <= '0';
 			erros(1) <= '1';
 		
-		elsif (vida_s(1) = '1' AND erros(1) = '0') then
+		ELSIF (vida_s(1) = '1' AND erros(1) = '0') THEN
 			vida_s(1) <= '0';
 			erros(1) <= '1';
 			
-		elsif (vida_s(0) = '1' AND erros(1) = '0') then
+		ELSIF (vida_s(0) = '1' AND erros(1) = '0') THEN
 			vida_s(0) <= '0';
 			erros(1) <= '1';
-		end if;
-		end if;
+		END IF;
+		END IF;
 		
-	when "100" =>
-	if (reset = '1') then
+	WHEN "100" =>
+	IF (reset = '1') THEN
 			estado_s <= "00000";
 			ganha_s <= '0';
 			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
-		end if;
-	if (botao = '1' AND erros(0) = '0') then
-		if vida_s(2) = '1' then
+		END IF;
+	IF (botao = '1' AND erros(0) = '0') THEN
+		IF vida_s(2) = '1' THEN
 			vida_s(2) <= '0';
 			erros(0) <= '1';
 		
-		elsif (vida_s(1) = '1' AND erros(0) = '0') then
+		ELSIF (vida_s(1) = '1' AND erros(0) = '0') THEN
 			vida_s(1) <= '0';
 			erros(0) <= '1';
 			
-		elsif (vida_s(0) = '1' AND erros(0) = '0') then
+		ELSIF (vida_s(0) = '1' AND erros(0) = '0') THEN
 			vida_s(0) <= '0';
 			erros(0) <= '1';
-		end if;		
-		end if;
+		END IF;		
+		END IF;
 		
-	when others =>
-	if (reset = '1') then
+	WHEN OTHERS =>
+	IF (reset = '1') THEN
 			estado_s <= "00000";
 			ganha_s <= '0';
 			perde_s <= '0';
 			vida_s <= "111";
 			erros <= "000";
-		end if;
-	if (botao = '1') then
-		if vida_s(2) = '1' then
+		END IF;
+	IF (botao = '1') THEN
+		IF vida_s(2) = '1' THEN
 			vida_s(2) <= '0';
 		
-		elsif vida_s(1) = '1' then
+		ELSIF vida_s(1) = '1' THEN
 			vida_s(1) <= '0';
 		
-		elsif vida_s(0) = '1' then
+		ELSIF vida_s(0) = '1' THEN
 			vida_s(0) <= '0';
-		end if;
-	end if; 
-	end case;
+		END IF;
+	END IF; 
+	END CASE;
 
-end if;
+END IF;
 
 -- A VARIÁVEL GANHA SÓ SERÁ 1 SE TODOS OS DIGÍTOS FOREM ACERTADOS
-ganha_s <= estado_s(4) and estado_s(3) and estado_s(2) and estado_s(1) and estado_s(0);
+ganha_s <= estado_s(4) AND estado_s(3) AND estado_s(2) AND estado_s(1) AND estado_s(0);
 
-if (vida_s = "000") then
+IF (vida_s = "000") THEN
 ganha_s <= '0';
 perde_s <= '1';
-end if;
-end process;
+END IF;
+END PROCESS;
 
 -- AQUI, CADA VARIÁVEL DE SAÍDA RECEBERÁ SEUS SIGNALS CORRESPONDENTES
 	
@@ -219,4 +219,4 @@ estado_out <= estado_s;
 vida <= vida_s;
 perde <= perde_s;
 ganha <= ganha_s;
-end Behavioral;
+END Behavioral;
