@@ -27,7 +27,7 @@ architecture Behavioral of FORCA2 is
 signal estado_s : std_logic_vector (4 downto 0) := "00000"; -- COMEÇA SEM NENHUM ACERTO
 signal vida_s : std_logic_vector (2 downto 0) := "111"; -- COMEÇA COM TODAS AS VIDAS
 signal botao_s : std_logic;
-signal chute_s : std_logic_vector (2 downto 0);
+signal tentativa_s : std_logic_vector (2 downto 0);
 signal ganha_s : std_logic := '0';
 signal perde_s : std_logic:= '0';
 signal erros : std_logic_vector(2 downto 0) := "000"; -- O VETOR ERROS SURGIU PARA SOLUCIONAR UM ERRO ASSOCIADO AO BOTÃO, EM QUE A RESPOSTA ERA CONTABILIZADA
@@ -44,7 +44,7 @@ if(clk' event and clk = '1') then
 -- EM CASO DE ACERTO, E A VIDA INDO DE 1 PARA 0, EM CASO DE ERRO
 -- NOSSO CÓDIGO FUNCIONOU SEM CONTABILIZAR CHUTES REPETIDOS
 
-	case chute is
+	case tentativa is
 
 	when "111" => -- 7, dígito 1 da esquerda pra direita
 		if (reset = '1') then
@@ -144,7 +144,7 @@ if(clk' event and clk = '1') then
 			erros <= "000";
 		end if;
 	if (botao = '1' AND erros(1) = '0') then
-		if vidas_s(2) = '1' then
+		if vida_s(2) = '1' then
 			vida_s(2) <= '0';
 			erros(1) <= '1';
 		
@@ -190,7 +190,7 @@ if(clk' event and clk = '1') then
 			erros <= "000";
 		end if;
 	if (botao = '1') then
-		if vidas_(2) = '1' then
+		if vida_s(2) = '1' then
 			vida_s(2) <= '0';
 		
 		elsif vida_s(1) = '1' then
