@@ -1,4 +1,4 @@
-# Forca---Sistemas-Digitais
+# Forca - Sistemas-Digitais
 
 Esse trabalho corresponde ao segundo projeto da matéria de Sistemas Digitais ministrada pela professora Mariana Maciel.
 O grupo responsável por esse projeto é:
