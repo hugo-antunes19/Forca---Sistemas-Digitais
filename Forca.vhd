@@ -20,33 +20,33 @@ Port (
 -- SENHA = 71650
 		
 		
-end Forca;
+END Forca;
 
 architecture Behavioral of Forca is
 
-signal estado_s : std_logic_vector (4 downto 0) := "00000"; -- COMEÇA SEM NENHUM ACERTO
-signal vida_s : std_logic_vector (2 downto 0) := "111"; -- COMEÇA COM TODAS AS VIDAS
-signal botao_s : std_logic;
-signal tentativa_s : std_logic_vector (2 downto 0);
-signal ganha_s : std_logic := '0';
-signal perde_s : std_logic:= '0';
-signal erros : std_logic_vector(2 downto 0) := "000"; -- O VETOR ERROS SURGIU PARA SOLUCIONAR UM ERRO ASSOCIADO AO BOTÃO, EM QUE A RESPOSTA ERA CONTABILIZADA
+SIGNAL estado_s : std_logic_vector (4 downto 0) := "00000"; -- COMEÇA SEM NENHUM ACERTO
+SIGNAL vida_s : std_logic_vector (2 downto 0) := "111"; -- COMEÇA COM TODAS AS VIDAS
+SIGNAL botao_s : std_logic;
+SIGNAL tentativa_s : std_logic_vector (2 downto 0);
+SIGNAL ganha_s : std_logic := '0';
+SIGNAL perde_s : std_logic:= '0';
+SIGNAL erros : std_logic_vector(2 downto 0) := "000"; -- O VETOR ERROS SURGIU PARA SOLUCIONAR UM ERRO ASSOCIADO AO BOTÃO, EM QUE A RESPOSTA ERA CONTABILIZADA
 -- DIVERSAS VEZES, RESULTANDO EM UMA DERROTA INSTANTÂNEA, DEVIDO À VELOCIDADE DO CLOCK (DIVERSAS SUBIDAS DE CLOCK ACONTECIAM NO APERTAR DO BOTÃO)
 -- OBJETIVAMENTE COM O O VETOR ERROS, PORTANTO, ESSE ERRO FOI SOLUCIONADO, ALÉM DE CHUTES REPETIDOS SEREM DESCONSIDERADOS, POIS ELE IMPEDE QUE CHUTES
 -- ERRADOS SEJAM FEITOS MAIS DE UMA VEZ.
 
 begin
 
-process (clk,reset) begin
+PROCESS (clk,reset) begin
 
-if(clk' event and clk = '1') then
+IF(clk' event and clk = '1') THEN
 -- NESSE TRECHO, SERÃO COMPARADOS OS CHUTES E OS DÍGITOS DA SENHA, RESULTANDO EM UM ACERTO, COM O BIT CORRESPONDENTE AO DÍGITO NO VETOR ESTADO-S INDO DE O PARA 1,
 -- EM CASO DE ACERTO, E A VIDA INDO DE 1 PARA 0, EM CASO DE ERRO
 -- NOSSO CÓDIGO FUNCIONOU SEM CONTABILIZAR CHUTES REPETIDOS
 
-	case tentativa is
+	CASE tentativa IS
 
-	when "111" => -- 7, dígito 1 da esquerda pra direita
+	WHEN "111" => -- 7, dígito 1 da esquerda pra direita
 		if (reset = '1') then
 			estado_s <= "00000"; 
 			ganha_s <= '0';
@@ -204,6 +204,7 @@ if(clk' event and clk = '1') then
 
 end if;
 
+-- A VARIÁVEL GANHA SÓ SERÁ 1 SE TODOS OS DIGÍTOS FOREM ACERTADOS
 ganha_s <= estado_s(4) and estado_s(3) and estado_s(2) and estado_s(1) and estado_s(0);
 
 if (vida_s = "000") then
@@ -212,6 +213,8 @@ perde_s <= '1';
 end if;
 end process;
 
+-- AQUI, CADA VARIÁVEL DE SAÍDA RECEBERÁ SEUS SIGNALS CORRESPONDENTES
+	
 estado_out <= estado_s;
 vida <= vida_s;
 perde <= perde_s;
